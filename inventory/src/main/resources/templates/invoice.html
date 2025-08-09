@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Invoice</title>
+    <style>
+        body {
+        font-family: 'DejaVuSans', sans-serif;
+    }
+    .amount {
+        font-family: 'DejaVuSans', sans-serif;
+    }
+        h2 {
+            text-align: center;
+        }
+        .details, .items {
+            width: 100%;
+            margin-top: 20px;
+        }
+        .items th, .items td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: left;
+        }
+        .items {
+            border-collapse: collapse;
+        }
+    </style>
+</head>
+<body>
+    <h2>Invoice</h2>
+    
+<div class="details">
+        <p><strong>Bill ID:</strong> <span th:text="${bill.id}"></span></p>
+        <p><strong>Date:</strong>
+            <span th:text="${#temporals.format(bill.billDate, 'dd-MM-yyyy HH:mm')}"></span>
+        </p>
+
+  <!-- Safe customer block -->
+        <p th:if="${bill.customer != null}">
+            <strong>Customer:</strong> 
+            <span th:text="${bill.customer.name}"></span>
+            <span th:if="${bill.customer.phone != null}">
+                (<span th:text="${bill.customer.phone}"></span>)
+            </span>
+        </p>
+    </div>
+
+    <table class="items">
+        <thead>
+            <tr>
+                <th>Product</th>
+                <th>Qty</th>
+                <th>Price</th>
+                <th>Subtotal</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="item : ${bill.items}">
+                <td th:text="${item.product.name}">Product</td>
+                <td th:text="${item.quantity}">1</td>
+                <td>
+                    ₹<span th:text="${#numbers.formatDecimal(item.product.price, 1, 'COMMA', 2, 'POINT')}"></span>
+                </td>
+                <td>
+                    ₹<span th:text="${#numbers.formatDecimal(item.totalPrice, 1, 'COMMA', 2, 'POINT')}"></span>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h3>Total: ₹<span th:text="${#numbers.formatDecimal(bill.totalAmount, 1, 'COMMA', 2, 'POINT')}"></span></h3>
+
+</body>
+</html>
