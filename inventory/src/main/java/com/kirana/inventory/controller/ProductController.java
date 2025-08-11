@@ -55,6 +55,7 @@ public class ProductController {
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Long id) {
         productService.deleteProduct(id);
+        
     }
 
     // ✅ POST add stock

@@ -108,6 +108,10 @@ public void exportBillToPdf(@PathVariable Long billId, HttpServletResponse respo
     System.out.println("Bill Items: " + bill.getItems());
 }
 
+// @GetMapping("/recent")
+// public ResponseEntity<List<Bill>> getRecentBills() {
+//     return ResponseEntity.ok(billService.getRecentBills(5)); // limit to 5
+// }
 
 
 

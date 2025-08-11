@@ -13,7 +13,7 @@ export default function Dashboard() {
   useEffect(() => {
     const fetchDashboardData = async () => {
       try {
-        const productRes = await axios.get('/api/products');
+        const productRes = await axios.get('/api/bills/...');
         const lowStock = productRes.data.filter(p => p.quantity < 10).length;
 
         const invoiceRes = await axios.get('/api/invoices/recent');
