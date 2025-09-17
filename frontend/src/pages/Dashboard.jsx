@@ -40,7 +40,7 @@ export default function Dashboard() {
   return (
     <div className="p-6 space-y-10">
       <h1 className="text-3xl font-extrabold tracking-tight mb-6">
-        📊 Dashboard Overview
+        Dashboard Overview
       </h1>
 
       {/* Stats Cards */}
