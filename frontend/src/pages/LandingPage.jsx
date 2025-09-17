@@ -11,7 +11,7 @@ export default function LandingPage() {
       <div className="bg-black bg-opacity-60 p-10 rounded-lg text-center">
         <img src="/logo.png" alt="Digital Kirana" className="w-24 h-24 mx-auto mb-4" />
         <h1 className="text-4xl font-bold">DIGITAL KIRANA</h1>
-        <p className="mt-2 text-xl">Digitizing Local Kirana Shops</p>
+        <p className="mt-2 text-xl">Digitalizing Local Kirana Shops</p>
         <button
           className="mt-6 px-6 py-3 bg-yellow-500 text-white rounded-full shadow-md hover:bg-yellow-600 transition"
           onClick={() => navigate('/dashboard')}
