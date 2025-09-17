@@ -2,6 +2,7 @@ package com.kirana.inventory.controller;
 
 import java.util.List;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -17,6 +18,8 @@ import com.kirana.inventory.dto.AddStockRequest;
 import com.kirana.inventory.dto.UpdateProductRequest;
 import com.kirana.inventory.model.Product;
 import com.kirana.inventory.service.ProductService;
+
+import jakarta.persistence.EntityNotFoundException;
 
 @CrossOrigin(origins = "http://localhost:3000") // Adjust the origin as needed
 @RestController
@@ -46,10 +49,19 @@ public class ProductController {
     }
 
     // ✅ PUT update product using full Product
-    @PutMapping("/{id}")
-    public Product update(@PathVariable Long id, @RequestBody Product product) {
-        return productService.updateProduct(id, product);
+    // @PutMapping("/{id}")
+    // public Product update(@PathVariable Long id, @RequestBody Product product) {
+    //     return productService.updateProduct(id, product);
+    // }
+@PutMapping("/{id}")
+public ResponseEntity<?> update(@PathVariable Long id, @RequestBody Product product) {
+    try {
+        Product updated = productService.updateProduct(id, product);
+        return ResponseEntity.ok(updated);
+    } catch (EntityNotFoundException e) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Product not found");
     }
+}
 
     // ✅ DELETE product by ID
     @DeleteMapping("/{id}")
@@ -65,10 +77,10 @@ public class ProductController {
     }
 
     // ✅ PUT update product using custom DTO
-    @PutMapping("/update")
-    public ResponseEntity<Product> updateProduct(@RequestBody UpdateProductRequest request) {
-        return ResponseEntity.ok(productService.updateProduct(request));
-    }
+    // @PutMapping("/update")
+    // public ResponseEntity<Product> updateProduct(@RequestBody UpdateProductRequest request) {
+    //     return ResponseEntity.ok(productService.updateProduct(request));
+    // }
 
     @GetMapping("/low-stock")
 public List<Product> getLowStockProducts() {
