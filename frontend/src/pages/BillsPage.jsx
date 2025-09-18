@@ -2,13 +2,14 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 
 const API = "http://localhost:8080/api/bills";
+const PRODUCTS_API = "http://localhost:8080/api/products"; // <-- new
 
 export default function BillsPage() {
   const [customerName, setCustomerName] = useState("");
   const [customerPhone, setCustomerPhone] = useState("");
   const [items, setItems] = useState([{ productId: "", quantity: 1 }]);
   const [bills, setBills] = useState([]);
-
+const [products, setProducts] = useState([]); // <-- new
   // Fetch all bills
   const fetchBills = async () => {
     try {
@@ -18,9 +19,19 @@ export default function BillsPage() {
       console.error(err);
     }
   };
+  // Fetch all products
+  const fetchProducts = async () => {
+    try {
+      const res = await axios.get(PRODUCTS_API);
+      setProducts(res.data);
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   useEffect(() => {
     fetchBills();
+    fetchProducts(); // <-- fetch products when page loads
   }, []);
 
   // Create bill
