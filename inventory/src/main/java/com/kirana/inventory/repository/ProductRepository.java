@@ -1,6 +1,7 @@
 package com.kirana.inventory.repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -22,5 +23,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     @Query("SELECT p FROM Product p WHERE p.quantity < p.threshold")
 List<Product> findLowStockProducts();
+  
 
-} 
+Optional<Product> findByName(String name); 
+}

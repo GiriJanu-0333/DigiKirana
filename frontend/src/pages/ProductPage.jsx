@@ -7,7 +7,7 @@ export default function ProductPage() {
   const [products, setProducts] = useState([]);
   const [name, setName] = useState("");
   const [price, setPrice] = useState("");
-  const [stock, setStock] = useState("");
+  const [quantity, setQuantity] = useState("");
   const [editingProduct, setEditingProduct] = useState(null);
   const [lowStock, setLowStock] = useState([]);
 
@@ -43,22 +43,29 @@ export default function ProductPage() {
       if (editingProduct) {
         await axios.put(`${API}/${editingProduct.id}`, {
           name,
-          price,
-          stock,
+          // price,
+          // stock,
+           price: Number(price),
+    quantity: Number(quantity),
         });
         alert("✅ Product updated!");
       } else {
-        await axios.post(API, { name, price, stock });
+        await axios.post(API, { name,  price: Number(price),quantity: Number(quantity), });
         alert("✅ Product created!");
       }
       setName("");
+      // setPrice("");
+      // setStock("");
       setPrice("");
-      setStock("");
+      setQuantity("");
+      setEditingProduct(null);
       setEditingProduct(null);
       fetchProducts();
       fetchLowStock();
     } catch (err) {
-      alert("❌ Failed to save product");
+      console.error(err.response?.data || err.message);
+alert("❌ Failed to save product: " + (err.response?.data?.message || err.message));
+
     }
   };
 
@@ -67,7 +74,7 @@ export default function ProductPage() {
     setEditingProduct(product);
     setName(product.name);
     setPrice(product.price);
-    setStock(product.stock);
+    setQuantity(product.quantity);
   };
 
   // Delete product
@@ -84,16 +91,28 @@ export default function ProductPage() {
   };
 
   // Add stock
-  const handleAddStock = async (id, qty) => {
-    try {
-      await axios.post(`${API}/add-stock`, { productId: id, quantity: qty });
-      alert("📦 Stock added!");
-      fetchProducts();
-      fetchLowStock();
-    } catch (err) {
-      alert("❌ Failed to add stock");
-    }
-  };
+  // const handleAddStock = async (id, qty) => {
+  //   try {
+  //     await axios.post(`${API}/add-stock`, { productId: id, quantity: qty });
+  //     alert("📦 Stock added!");
+  //     fetchProducts();
+  //     fetchLowStock();
+  //   } catch (err) {
+  //     alert("❌ Failed to add stock");
+  //   }
+  // };
+  const handleAddStock = async (id) => {
+  const qty = Number(prompt("Enter quantity to add:", 1));
+  if (!qty || qty <= 0) return;
+  try {
+    await axios.post(`${API}/add-stock`, { productId: id, quantity: qty });
+    alert("📦 Stock added!");
+    fetchProducts();
+    fetchLowStock();
+  } catch (err) {
+    alert("❌ Failed to add stock");
+  }
+};
 
   return (
     <div className="p-6 space-y-8">
@@ -123,9 +142,9 @@ export default function ProductPage() {
         />
         <input
           type="number"
-          placeholder="Stock"
-          value={stock}
-          onChange={(e) => setStock(e.target.value)}
+          placeholder="Quantity"
+          value={quantity}
+          onChange={(e) => setQuantity(e.target.value)}
           className="border p-2 rounded w-full"
           required
         />
@@ -146,7 +165,7 @@ export default function ProductPage() {
           <ul className="list-disc pl-5">
             {lowStock.map((p) => (
               <li key={p.id}>
-                {p.name} — {p.stock} left
+                {p.name} — {p.quantity} left
               </li>
             ))}
           </ul>
@@ -162,17 +181,17 @@ export default function ProductPage() {
               <th className="p-2 border">ID</th>
               <th className="p-2 border">Name</th>
               <th className="p-2 border">Price</th>
-              <th className="p-2 border">Stock</th>
+              <th className="p-2 border">Quantity</th>
               <th className="p-2 border">Actions</th>
             </tr>
           </thead>
           <tbody>
             {products.map((p) => (
-              <tr key={p.id} className="border">
+              <tr key={p.id} className="border hover:bg-gray-50">
                 <td className="p-2 border">{p.id}</td>
                 <td className="p-2 border">{p.name}</td>
                 <td className="p-2 border">₹{p.price}</td>
-                <td className="p-2 border">{p.stock}</td>
+                <td className="p-2 border">{p.quantity}</td>
                 <td className="p-2 border space-x-2">
                   <button
                     onClick={() => handleEdit(p)}
@@ -190,7 +209,7 @@ export default function ProductPage() {
                     onClick={() => handleAddStock(p.id, 5)}
                     className="bg-green-600 text-white px-3 py-1 rounded"
                   >
-                    ➕ Add 5 Stock
+                    ➕ Add Stock
                   </button>
                 </td>
               </tr>

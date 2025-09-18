@@ -45,7 +45,8 @@ public class ProductController {
     // ✅ POST create product
     @PostMapping
     public Product create(@RequestBody Product product) {
-        return productService.saveProduct(product);
+        return productService.addOrUpdateProduct(product);
+
     }
 
     // ✅ PUT update product using full Product
@@ -56,7 +57,7 @@ public class ProductController {
 @PutMapping("/{id}")
 public ResponseEntity<?> update(@PathVariable Long id, @RequestBody Product product) {
     try {
-        Product updated = productService.updateProduct(id, product);
+        Product updated = productService.updateProductDetails(id, product);
         return ResponseEntity.ok(updated);
     } catch (EntityNotFoundException e) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Product not found");

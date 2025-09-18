@@ -5,5 +5,5 @@ import lombok.Data;
 @Data
 public class AddStockRequest {
     private Long productId;
-    private int quantityToAdd;
+    private int quantity;
 }

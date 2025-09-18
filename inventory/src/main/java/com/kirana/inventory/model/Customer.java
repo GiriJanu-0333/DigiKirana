@@ -34,6 +34,8 @@ public class Customer {
 
     private String address;
 
+     private boolean isDeleted = false;
+
     @CreationTimestamp
     private LocalDateTime createdAt;
 

@@ -45,7 +45,7 @@ public class BillService {
 
         // Step 2: Fetch/Create Customer
         Customer customer = customerRepository
-                .findByPhone(billRequestDto.getCustomerPhone())
+                .findByPhoneAndIsDeletedFalse(billRequestDto.getCustomerPhone())
                 .orElseGet(() -> {
                     Customer newCustomer = new Customer();
                     newCustomer.setName(billRequestDto.getCustomerName());
