@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.kirana.inventory.dto.AddStockRequest;
@@ -31,7 +32,7 @@ public class ProductController {
     public ProductController(ProductService productService) {
         this.productService = productService;
     }
-
+    
     @GetMapping
     public List<Product> getAll() {
         return productService.getAllProducts();
@@ -42,6 +43,11 @@ public class ProductController {
         return productService.getProductById(id);
     }
 
+        // ✅ GET search products by name
+    @GetMapping("/search")
+public List<Product> searchByName(@RequestParam String name) {
+    return productService.searchProductsByName(name);
+}
     // ✅ POST create product
     @PostMapping
     public Product create(@RequestBody Product product) {
@@ -49,11 +55,6 @@ public class ProductController {
 
     }
 
-    // ✅ PUT update product using full Product
-    // @PutMapping("/{id}")
-    // public Product update(@PathVariable Long id, @RequestBody Product product) {
-    //     return productService.updateProduct(id, product);
-    // }
 @PutMapping("/{id}")
 public ResponseEntity<?> update(@PathVariable Long id, @RequestBody Product product) {
     try {
@@ -87,5 +88,7 @@ public ResponseEntity<?> update(@PathVariable Long id, @RequestBody Product prod
 public List<Product> getLowStockProducts() {
     return productService.getLowStockProducts();
 }
+
+
 
 }
