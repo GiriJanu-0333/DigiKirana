@@ -52,11 +52,7 @@ public ResponseEntity<Bill> createBill(@RequestBody BillRequestDto billRequestDt
 
         return ResponseEntity.ok(bill);
     }
-    // ✅ Get all bills
-    // @GetMapping
-    // public ResponseEntity<List<Bill>> getAllBills() {
-    //     return ResponseEntity.ok(billService.getAllBills());
-    // }
+
     @GetMapping
 public List<BillResponseDto> getAllBills() {
     return billService.getAllBills();
