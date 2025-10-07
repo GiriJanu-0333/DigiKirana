@@ -12,6 +12,7 @@ import CustomersPage from './pages/CustomersPage';
 import ProductPage from './pages/ProductPage';
 import BillsPage from './pages/BillsPage';
 import Navbar from './pages/Navbar';
+import ProfilePage from './pages/ProfilePage';
 
 function AppContent() {
   const location = useLocation();
@@ -26,6 +27,7 @@ function AppContent() {
         <Route path='/customers' element={<CustomersPage />} />
         <Route path='/products' element={<ProductPage />} />
         <Route path='/bills' element={<BillsPage />} />
+        <Route path='/profile' element={<ProfilePage />} />
       </Routes>
     </>
   );

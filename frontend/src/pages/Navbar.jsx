@@ -1,5 +1,5 @@
 import { Link, useLocation } from "react-router-dom";
-import { LayoutDashboard, FileText, Users, Package } from "lucide-react";
+import { LayoutDashboard, FileText, Users, Package, User } from "lucide-react"; // ✅ added User icon
 
 export default function Navbar() {
   const location = useLocation();
@@ -12,19 +12,33 @@ export default function Navbar() {
   ];
 
   return (
-    <nav className="bg-blue-600 text-white p-4 flex gap-6 shadow-md">
-      {links.map((link) => (
-        <Link
-          key={link.path}
-          to={link.path}
-          className={`flex items-center gap-2 hover:underline ${
-            location.pathname === link.path ? "font-bold underline" : ""
-          }`}
-        >
-          {link.icon}
-          {link.name}
-        </Link>
-      ))}
+    <nav className="bg-blue-600 text-white p-4 flex items-center justify-between shadow-md">
+      {/* Left side — nav links */}
+      <div className="flex gap-6">
+        {links.map((link) => (
+          <Link
+            key={link.path}
+            to={link.path}
+            className={`flex items-center gap-2 hover:underline ${
+              location.pathname === link.path ? "font-bold underline" : ""
+            }`}
+          >
+            {link.icon}
+            {link.name}
+          </Link>
+        ))}
+      </div>
+
+      {/* Right side — profile icon */}
+      <Link
+        to="/profile"
+        className={`flex items-center gap-2 hover:underline ${
+          location.pathname === "/profile" ? "font-bold underline" : ""
+        }`}
+      >
+        <User size={20} /> {/* ✅ Lucide-react user icon */}
+        <span></span>
+      </Link>
     </nav>
   );
 }
