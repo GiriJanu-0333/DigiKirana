@@ -11,6 +11,7 @@ import java.util.Map;
 import org.springframework.stereotype.Service;
 
 import com.kirana.inventory.dto.BillRequestDto;
+import com.kirana.inventory.dto.BillResponseDto;
 import com.kirana.inventory.dto.SalesSummaryDto;
 import com.kirana.inventory.model.Bill;
 import com.kirana.inventory.model.BillItem;
@@ -112,9 +113,28 @@ public Bill getBillById(Long id) {
         .orElseThrow(() -> new RuntimeException("Bill not found with id: " + id));
 }
 
-public List<Bill> getAllBills() {
-    return billRepository.findAll();
+// public List<Bill> getAllBills() {
+//     return billRepository.findAll();
+// }
+public List<BillResponseDto> getAllBills() {
+    List<Bill> bills = billRepository.findAll();
+    List<BillResponseDto> dtos = new ArrayList<>();
+
+    for (Bill bill : bills) {
+        BillResponseDto dto = new BillResponseDto();
+        dto.setId(bill.getId());
+        if (bill.getCustomer() != null) {
+            dto.setCustomerName(bill.getCustomer().getName());
+            dto.setCustomerPhone(bill.getCustomer().getPhone());
+        }
+        dto.setTotalAmount(bill.getTotalAmount());
+        dto.setBillDate(bill.getBillDate());
+        dtos.add(dto);
+    }
+
+    return dtos;
 }
+
 
 public List<Bill> getBillsByCustomer(Long customerId) {
     return billRepository.findByCustomerId(customerId);

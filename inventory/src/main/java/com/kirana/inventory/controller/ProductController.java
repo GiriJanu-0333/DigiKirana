@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.kirana.inventory.dto.AddStockRequest;
-import com.kirana.inventory.dto.UpdateProductRequest;
 import com.kirana.inventory.model.Product;
 import com.kirana.inventory.service.ProductService;
 

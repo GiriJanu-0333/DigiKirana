@@ -26,4 +26,6 @@ List<Product> findLowStockProducts();
   
 
 Optional<Product> findByName(String name); 
+
+List<Product> findByNameContainingIgnoreCase(String name);
 }

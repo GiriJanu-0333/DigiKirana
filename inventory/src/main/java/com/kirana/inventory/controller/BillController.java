@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.kirana.inventory.dto.BillRequestDto;
+import com.kirana.inventory.dto.BillResponseDto;
 import com.kirana.inventory.dto.SalesSummaryDto;
 import com.kirana.inventory.model.Bill;
 import com.kirana.inventory.service.BillService;
@@ -52,10 +53,15 @@ public ResponseEntity<Bill> createBill(@RequestBody BillRequestDto billRequestDt
         return ResponseEntity.ok(bill);
     }
     // ✅ Get all bills
+    // @GetMapping
+    // public ResponseEntity<List<Bill>> getAllBills() {
+    //     return ResponseEntity.ok(billService.getAllBills());
+    // }
     @GetMapping
-    public ResponseEntity<List<Bill>> getAllBills() {
-        return ResponseEntity.ok(billService.getAllBills());
-    }
+public List<BillResponseDto> getAllBills() {
+    return billService.getAllBills();
+}
+
 
     // ✅ Get bills by customer
     @GetMapping("/by-customer/{customerId}")

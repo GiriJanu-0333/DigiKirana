@@ -31,6 +31,10 @@ public class ProductService {
         return productRepository.findById(id).orElse(null);
     }
 
+      public List<Product> searchProductsByName(String name) {
+        return productRepository.findByNameContainingIgnoreCase(name);
+    }
+
     public Product saveProduct(Product product) {
         return productRepository.save(product);
     }
@@ -67,32 +71,7 @@ public Product updateProductDetails(Long id, Product updatedProduct) {
 
     public void deleteProduct(Long id) {
     productRepository.deleteById(id);
-}
-
-//     public Product updateProduct(Long id, Product updatedProduct) {
-//     Optional<Product> optional = productRepository.findById(id);
-//     if (optional.isPresent()) {
-//         Product product = optional.get();
-//         product.setName(updatedProduct.getName());
-//         product.setPrice(updatedProduct.getPrice());
-//         product.setQuantity(updatedProduct.getQuantity());
-//         product.setThreshold(updatedProduct.getThreshold());
-//         return productRepository.save(product);
-//     }
-//     return null;
-// }
-
-// public Product updateProductFromRequest(UpdateProductRequest request) {
-//     Product product = productRepository.findById(request.getProductId())
-//             .orElseThrow(() -> new RuntimeException("Product not found"));
-
-//     product.setName(request.getName());
-//     product.setPrice(request.getPrice());
-//     product.setThreshold(request.getThreshold());
-
-//     return productRepository.save(product);
-// }
-    
+} 
 
        // ✅ New Method 1: Add Stock
     public Product addStock(AddStockRequest request) {
