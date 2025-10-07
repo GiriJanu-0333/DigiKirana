@@ -95,10 +95,22 @@ const [products, setProducts] = useState([]); // <-- new
           className="border p-2 rounded w-full"
           required
         />
-
-        <h3 className="font-semibold">Items</h3>
+<div >
+        <h3 className="font-semibold">Items</h3></div>
         {items.map((item, index) => (
           <div key={index} className="flex gap-2 mb-2">
+            <input 
+            type="text"
+            placeholder="product name"
+            value={item.productName}
+             onChange={(e) => {
+                const newItems = [...items];
+                newItems[index].productName = e.target.value;
+                setItems(newItems);
+              }}
+              className="border p-2 rounded flex-1"
+              required
+            />
             <input
               type="number"
               placeholder="Product ID"
@@ -111,9 +123,10 @@ const [products, setProducts] = useState([]); // <-- new
               className="border p-2 rounded flex-1"
               required
             />
+            
             <input
               type="number"
-              placeholder="Quantity"
+              placeholder="Quantity in Kg"
               value={item.quantity}
               onChange={(e) => {
                 const newItems = [...items];
