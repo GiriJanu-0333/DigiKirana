@@ -95,8 +95,8 @@ const [products, setProducts] = useState([]); // <-- new
           className="border p-2 rounded w-full"
           required
         />
-<div >
-        <h3 className="font-semibold">Items</h3></div>
+<div ><snap>
+       <pre> <h3 className="font-semibold">Items                                                                                                            Quentity</h3></pre></snap></div>
         {items.map((item, index) => (
           <div key={index} className="flex gap-2 mb-2">
             <input 
