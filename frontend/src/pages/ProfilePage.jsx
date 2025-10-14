@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { getOwner, updateOwner } from "../services/ownerService";
+import { getOwner, updateOwner, createOwner } from "../services/ownerService";
 
 export default function ProfilePage() {
   const [form, setForm] = useState({
