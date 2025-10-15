@@ -95,49 +95,73 @@ const [products, setProducts] = useState([]); // <-- new
           className="border p-2 rounded w-full"
           required
         />
-<div ><snap>
-       <pre> <h3 className="font-semibold">Items                                                                                                            Quentity</h3></pre></snap></div>
-        {items.map((item, index) => (
-          <div key={index} className="flex gap-2 mb-2">
-            <input 
-            type="text"
-            placeholder="product name"
-            value={item.productName}
-             onChange={(e) => {
-                const newItems = [...items];
-                newItems[index].productName = e.target.value;
-                setItems(newItems);
-              }}
-              className="border p-2 rounded flex-1"
-              required
-            />
-            <input
-              type="number"
-              placeholder="Product ID"
-              value={item.productId}
-              onChange={(e) => {
-                const newItems = [...items];
-                newItems[index].productId = e.target.value;
-                setItems(newItems);
-              }}
-              className="border p-2 rounded flex-1"
-              required
-            />
-            
-            <input
-              type="number"
-              placeholder="Quantity in Kg"
-              value={item.quantity}
-              onChange={(e) => {
-                const newItems = [...items];
-                newItems[index].quantity = e.target.value;
-                setItems(newItems);
-              }}
-              className="border p-2 rounded flex-1"
-              required
-            />
-          </div>
+ {items.map((item, index) => (
+  <div key={index} className="flex flex-col mb-4">
+    <input
+      type="text"
+      placeholder="Search product by name"
+      value={item.productName || ""}
+      onChange={async (e) => {
+        const value = e.target.value;
+        const newItems = [...items];
+        newItems[index].productName = value;
+        setItems(newItems);
+
+        // fetch suggestions when typing
+        if (value.length > 1) {
+          try {
+            const res = await axios.get(`${PRODUCTS_API}/search?name=${value}`);
+            newItems[index].suggestions = res.data;
+            setItems([...newItems]);
+          } catch (err) {
+            console.error(err);
+          }
+        } else {
+          newItems[index].suggestions = [];
+          setItems([...newItems]);
+        }
+      }}
+      className="border p-2 rounded"
+      required
+    />
+
+    {/* Dropdown of suggestions */}
+    {item.suggestions && item.suggestions.length > 0 && (
+      <ul className="border bg-white rounded shadow max-h-40 overflow-auto">
+        {item.suggestions.map((p) => (
+          <li
+            key={p.id}
+            className="p-2 hover:bg-gray-100 cursor-pointer"
+            onClick={() => {
+              const newItems = [...items];
+              newItems[index].productId = p.id;
+              newItems[index].productName = p.name;
+              newItems[index].price = p.price;
+              newItems[index].suggestions = [];
+              setItems(newItems);
+            }}
+          >
+            {p.name} - ₹{p.price}
+          </li>
         ))}
+      </ul>
+    )}
+
+    <input
+      type="number"
+      placeholder="Quantity"
+      value={item.quantity}
+      onChange={(e) => {
+        const newItems = [...items];
+        newItems[index].quantity = e.target.value;
+        setItems(newItems);
+      }}
+      className="border p-2 rounded mt-2"
+      required
+    />
+  </div>
+))}
+
         <button
           type="button"
           onClick={addItem}

@@ -3,9 +3,11 @@ package com.kirana.inventory.service;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.kirana.inventory.model.Bill;
+import com.kirana.inventory.model.Store;
 import com.openhtmltopdf.pdfboxout.PdfRendererBuilder;
 
 import jakarta.annotation.PostConstruct;
@@ -29,7 +31,9 @@ public class PdfService {
         templateEngine.setTemplateResolver(resolver);
     }
 public byte[] generateBillPdf(Bill bill) {
-    // Debug logs to check bill contents
+    
+
+            // Debug logs to check bill contents
     System.out.println("Bill ID: " + bill.getId());
     System.out.println("Total Amount: " + bill.getTotalAmount());
 
@@ -52,7 +56,7 @@ public byte[] generateBillPdf(Bill bill) {
 
     Context context = new Context();
     context.setVariable("bill", bill);
-
+    
     String htmlContent = templateEngine.process("invoice", context);
 
     try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
