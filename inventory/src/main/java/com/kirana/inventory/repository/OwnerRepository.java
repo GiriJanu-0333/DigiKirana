@@ -8,5 +8,5 @@ public interface OwnerRepository extends JpaRepository<Owner, Long> {
     // This interface will automatically inherit methods for CRUD operations
     // from JpaRepository, such as save, findById, findAll, deleteById, etc.
 
-    
+     Owner findFirstByOrderByIdAsc();
 } 

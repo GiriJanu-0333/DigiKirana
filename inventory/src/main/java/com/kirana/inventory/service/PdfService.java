@@ -7,7 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.kirana.inventory.model.Bill;
-import com.kirana.inventory.model.Store;
+import com.kirana.inventory.model.Owner;
+import com.kirana.inventory.repository.OwnerRepository;
 import com.openhtmltopdf.pdfboxout.PdfRendererBuilder;
 
 import jakarta.annotation.PostConstruct;
@@ -19,8 +20,10 @@ import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
 @Service
 @AllArgsConstructor
 public class PdfService {
+    
     private final TemplateEngine templateEngine;
-
+   
+   private final OwnerRepository ownerRepository;
     @PostConstruct
     public void setupTemplateEngine() {
         ClassLoaderTemplateResolver resolver = new ClassLoaderTemplateResolver();
@@ -34,27 +37,32 @@ public byte[] generateBillPdf(Bill bill) {
     
 
             // Debug logs to check bill contents
-    System.out.println("Bill ID: " + bill.getId());
-    System.out.println("Total Amount: " + bill.getTotalAmount());
+    // System.out.println("Bill ID: " + bill.getId());
+    // System.out.println("Total Amount: " + bill.getTotalAmount());
 
-    if (bill.getItems() == null || bill.getItems().isEmpty()) {
-        System.out.println("⚠️ Bill items are EMPTY or NULL.");
-    } else {
-        System.out.println("✅ Bill has " + bill.getItems().size() + " items.");
-        bill.getItems().forEach(item -> {
-            System.out.println("Item: " + item);
-            if (item.getProduct() == null) {
-                System.out.println("❌ Product in item is NULL");
-            } else {
-                System.out.println("✅ Product Name: " + item.getProduct().getName());
-                System.out.println("Qty: " + item.getQuantity());
-                System.out.println("Price: " + item.getProduct().getPrice());
-                System.out.println("Subtotal: " + item.getTotalPrice());
-            }
-        });
-    }
+    // if (bill.getItems() == null || bill.getItems().isEmpty()) {
+    //     System.out.println("⚠️ Bill items are EMPTY or NULL.");
+    // } else {
+    //     System.out.println("✅ Bill has " + bill.getItems().size() + " items.");
+    //     bill.getItems().forEach(item -> {
+    //         System.out.println("Item: " + item);
+    //         if (item.getProduct() == null) {
+    //             System.out.println("❌ Product in item is NULL");
+    //         } else {
+    //             System.out.println("✅ Product Name: " + item.getProduct().getName());
+    //             System.out.println("Qty: " + item.getQuantity());
+    //             System.out.println("Price: " + item.getProduct().getPrice());
+    //             System.out.println("Subtotal: " + item.getTotalPrice());
+    //         }
+    //     });
+    // }
 
     Context context = new Context();
+  Owner owner = ownerRepository.findFirstByOrderByIdAsc();
+if (owner == null) {
+    throw new RuntimeException("Owner details not found");
+}
+context.setVariable("owner", owner);
     context.setVariable("bill", bill);
     
     String htmlContent = templateEngine.process("invoice", context);

@@ -22,5 +22,7 @@ public class Product {
     private double price;
     private int quantity;
     private int threshold;
+    private String unit; // "kg", "ltr", "pcs", etc.
+
  }
 

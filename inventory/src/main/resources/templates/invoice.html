@@ -28,6 +28,15 @@
     </style>
 </head>
 <body>
+<div style="text-align: center; border-bottom: 2px solid black; padding-bottom: 10px; margin-bottom: 20px;">
+    <h1 style="margin: 0; font-size: 26px; font-weight: bold; text-transform: uppercase;"
+        th:text="${owner.shopName}">Shop Name</h1>
+    <p style="margin: 2px 0; font-size: 14px;" th:text="${owner.shopAddress}">Shop Address</p>
+    <p style="margin: 0; font-size: 14px;">
+        Phone: <span th:text="${owner.phone}">1234567890</span>
+       
+    </p>
+</div>
     <h2>Invoice</h2>
     
 <div class="details">
@@ -51,6 +60,7 @@
             <tr>
                 <th>Product</th>
                 <th>Qty</th>
+                <th>Unit</th> 
                 <th>Price</th>
                 <th>Subtotal</th>
             </tr>
@@ -59,6 +69,7 @@
             <tr th:each="item : ${bill.items}">
                 <td th:text="${item.product.name}">Product</td>
                 <td th:text="${item.quantity}">1</td>
+                 <td th:text="${item.product.unit}">kg</td>
                 <td>
                     ₹<span th:text="${#numbers.formatDecimal(item.product.price, 1, 'COMMA', 2, 'POINT')}"></span>
                 </td>
@@ -70,6 +81,10 @@
     </table>
 
     <h3>Total: ₹<span th:text="${#numbers.formatDecimal(bill.totalAmount, 1, 'COMMA', 2, 'POINT')}"></span></h3>
+  
+    <p style="text-align: center; font-size: 12px; font-style: italic; margin-top: 20px;">
+    Thank you for shopping with us!
+</p>
 
 </body>
 </html>

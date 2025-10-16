@@ -91,24 +91,51 @@ public ResponseEntity<String> deleteBill(@PathVariable Long id) {
 }
 
 // ✅ Export bill to PDF
+// @GetMapping("/{billId}/export/pdf")
+// public void exportBillToPdf(@PathVariable Long billId, HttpServletResponse response) {
+//     Bill bill = billService.getCompleteBillForPdf(billId);  // ✅ uses JOIN FETCH to load items
+
+//     byte[] pdfBytes = pdfService.generateBillPdf(bill);
+
+//     try {
+//         response.setContentType("application/pdf");
+//         response.setHeader("Content-Disposition", "attachment; filename=bill_" + billId + ".pdf");
+//         OutputStream os = response.getOutputStream();
+//         os.write(pdfBytes);
+//         os.flush();
+//     } catch (Exception e) {
+//         throw new RuntimeException("Failed to write PDF to response", e);
+//     }
+
+//     System.out.println("Bill Items: " + bill.getItems());
+// }
+
 @GetMapping("/{billId}/export/pdf")
 public void exportBillToPdf(@PathVariable Long billId, HttpServletResponse response) {
-    Bill bill = billService.getCompleteBillForPdf(billId);  // ✅ uses JOIN FETCH to load items
-
+    Bill bill = billService.getCompleteBillForPdf(billId);
     byte[] pdfBytes = pdfService.generateBillPdf(bill);
+
+    if (pdfBytes == null || pdfBytes.length == 0) {
+        throw new RuntimeException("PDF generation failed or returned empty file.");
+    }
 
     try {
         response.setContentType("application/pdf");
         response.setHeader("Content-Disposition", "attachment; filename=bill_" + billId + ".pdf");
+        response.setContentLength(pdfBytes.length);
+
         OutputStream os = response.getOutputStream();
         os.write(pdfBytes);
         os.flush();
+        os.close();
+
+        System.out.println("Bill Items: " + bill.getItems());
+        System.out.println("PDF size: " + pdfBytes.length + " bytes");
     } catch (Exception e) {
         throw new RuntimeException("Failed to write PDF to response", e);
     }
-
-    System.out.println("Bill Items: " + bill.getItems());
 }
+
 
 // @GetMapping("/recent")
 // public ResponseEntity<List<Bill>> getRecentBills() {
